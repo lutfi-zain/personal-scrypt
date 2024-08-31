@@ -47,10 +47,16 @@ async function hardResetAllReposToBranch(branch) {
 
     for (const repo of directories) {
       const repoPath = path.join(process.cwd(), repo);
-      const resetCommand = `cd ${repoPath} && git fetch origin && git reset --hard origin/${branch}`;
-      console.log(`Resetting ${repo} to branch ${branch}...`);
-      await executeCommand(resetCommand);
-      console.log(`${repo} reset to branch ${branch} successfully.`);
+      const gitPath = path.join(repoPath, ".git");
+
+      if (fs.existsSync(gitPath)) {
+        const resetCommand = `cd ${repoPath} && git fetch origin && git reset --hard origin/${branch}`;
+        console.log(`Resetting ${repo} to branch ${branch}...`);
+        await executeCommand(resetCommand);
+        console.log(`${repo} reset to branch ${branch} successfully.`);
+      } else {
+        console.log(`Skipping ${repo} as it is not a valid Git repository.`);
+      }
     }
   } catch (error) {
     console.error(error);
@@ -160,10 +166,18 @@ async function listLocalReposByKeyword(keyword) {
           rl.question("Enter the branch name to reset to: ", async (branch) => {
             for (const repo of filteredDirectories) {
               const repoPath = path.join(process.cwd(), repo);
-              const resetCommand = `cd ${repoPath} && git fetch origin && git reset --hard origin/${branch}`;
-              console.log(`Resetting ${repo} to branch ${branch}...`);
-              await executeCommand(resetCommand);
-              console.log(`${repo} reset to branch ${branch} successfully.`);
+              const gitPath = path.join(repoPath, ".git");
+
+              if (fs.existsSync(gitPath)) {
+                const resetCommand = `cd ${repoPath} && git fetch origin && git reset --hard origin/${branch}`;
+                console.log(`Resetting ${repo} to branch ${branch}...`);
+                await executeCommand(resetCommand);
+                console.log(`${repo} reset to branch ${branch} successfully.`);
+              } else {
+                console.log(
+                  `Skipping ${repo} as it is not a valid Git repository.`
+                );
+              }
             }
             rl.close();
             mainMenu();
@@ -171,10 +185,18 @@ async function listLocalReposByKeyword(keyword) {
         } else if (action.toLowerCase() === "f") {
           for (const repo of filteredDirectories) {
             const repoPath = path.join(process.cwd(), repo);
-            const fetchCommand = `cd ${repoPath} && git fetch origin`;
-            console.log(`Fetching latest changes for ${repo}...`);
-            await executeCommand(fetchCommand);
-            console.log(`${repo} fetched successfully.`);
+            const gitPath = path.join(repoPath, ".git");
+
+            if (fs.existsSync(gitPath)) {
+              const fetchCommand = `cd ${repoPath} && git fetch origin`;
+              console.log(`Fetching latest changes for ${repo}...`);
+              await executeCommand(fetchCommand);
+              console.log(`${repo} fetched successfully.`);
+            } else {
+              console.log(
+                `Skipping ${repo} as it is not a valid Git repository.`
+              );
+            }
           }
           rl.close();
           mainMenu();
