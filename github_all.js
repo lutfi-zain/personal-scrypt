@@ -243,13 +243,17 @@ async function compareBranches(branch1, branch2) {
         const compareCommand = `cd ${repoPath} && git fetch origin && git checkout ${branch1} && git merge --no-commit --no-ff origin/${branch2}`;
         console.log(`Comparing ${branch1} and ${branch2} in ${repo}...`);
         try {
-          await executeCommand(compareCommand);
-          console.log(`Branches ${branch1} and ${branch2} in ${repo} are mergeable.`);
+          const output = await executeCommand(compareCommand);
+          if (output.includes("Already up to date.")) {
+            console.log(`No changes between branches ${branch1} and ${branch2} in ${repo}.`);
+          } else {
+            console.log(`Branches ${branch1} and ${branch2} in ${repo} are mergeable.`);
+          }
         } catch (error) {
           if (error.includes("CONFLICT")) {
             console.log(`Branches ${branch1} and ${branch2} in ${repo} have conflicts.`);
           } else {
-            console.log(`No changes between branches ${branch1} and ${branch2} in ${repo}.`);
+            console.log(`Error while merging branches ${branch1} and ${branch2} in ${repo}: ${error}`);
           }
         }
         // Reset the repository to its original state
