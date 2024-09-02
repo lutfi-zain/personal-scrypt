@@ -217,6 +217,43 @@ async function listLocalReposByKeyword(keyword) {
   }
 }
 
+// Function to compare two branches in all repositories
+async function compareBranches(branch1, branch2) {
+  try {
+    // Read the list of directories in the current working directory
+    const directories = fs
+      .readdirSync(process.cwd(), { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
+
+    for (const repo of directories) {
+      const repoPath = path.join(process.cwd(), repo);
+      const gitPath = path.join(repoPath, ".git");
+
+      if (fs.existsSync(gitPath)) {
+        const compareCommand = `cd ${repoPath} && git fetch origin && git checkout ${branch1} && git merge --no-commit --no-ff origin/${branch2}`;
+        console.log(`Comparing ${branch1} and ${branch2} in ${repo}...`);
+        try {
+          await executeCommand(compareCommand);
+          console.log(`Branches ${branch1} and ${branch2} in ${repo} are mergeable.`);
+        } catch (error) {
+          if (error.includes("CONFLICT")) {
+            console.log(`Branches ${branch1} and ${branch2} in ${repo} have conflicts.`);
+          } else {
+            console.log(`No changes between branches ${branch1} and ${branch2} in ${repo}.`);
+          }
+        }
+        // Reset the repository to its original state
+        await executeCommand(`cd ${repoPath} && git reset --hard HEAD`);
+      } else {
+        console.log(`Skipping ${repo} as it is not a valid Git repository.`);
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 // Interactive CLI menu using readline
 function mainMenu() {
   const rl = readline.createInterface({
@@ -230,7 +267,8 @@ function mainMenu() {
   console.log("3. Search repositories with keyword");
   console.log("4. List local repositories and perform actions");
   console.log("5. Search local repositories by keyword and perform actions");
-  console.log("6. Exit");
+  console.log("6. Compare two branches in all repositories"); // New option
+  console.log("7. Exit");
 
   rl.question("Enter your choice: ", async (choice) => {
     switch (choice) {
@@ -263,7 +301,16 @@ function mainMenu() {
           await listLocalReposByKeyword(keyword);
         });
         return;
-      case "6":
+      case "6": // New case for comparing branches
+        rl.question("Enter the first branch name: ", async (branch1) => {
+          rl.question("Enter the second branch name: ", async (branch2) => {
+            await compareBranches(branch1, branch2);
+            rl.close();
+            mainMenu();
+          });
+        });
+        return;
+      case "7":
         console.log("Goodbye!");
         rl.close();
         process.exit(0);
