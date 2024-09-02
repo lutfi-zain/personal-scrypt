@@ -20,7 +20,7 @@ function executeCommand(command) {
 async function cloneAllReposFromOrg(org) {
   try {
     // Fetch the list of repositories
-    const reposListCommand = `gh repo list ${org} --json name --jq ".[].name"`;
+    const reposListCommand = `gh repo list ${org} -L 50000 --json name --jq ".[].name"`;
     const repos = await executeCommand(reposListCommand);
     const repoNames = repos.split("\n").filter(Boolean);
 
