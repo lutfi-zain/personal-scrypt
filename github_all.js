@@ -16,6 +16,7 @@ function executeCommand(command) {
   });
 }
 
+
 // Function to clone all repositories from an organization
 async function cloneAllReposFromOrg(org) {
   try {
@@ -26,6 +27,14 @@ async function cloneAllReposFromOrg(org) {
 
     // Clone each repository
     for (const repo of repoNames) {
+      const repoPath = path.join(process.cwd(), repo);
+      if (fs.existsSync(repoPath)) {
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const newRepoPath = `${repoPath}_${timestamp}`;
+        fs.renameSync(repoPath, newRepoPath);
+        console.log(`Renamed existing directory ${repo} to ${newRepoPath}`);
+      }
+
       const cloneCommand = `gh repo clone ${org}/${repo}`;
       console.log(`Cloning ${repo}...`);
       await executeCommand(cloneCommand);
