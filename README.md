@@ -1,6 +1,7 @@
 # Personal Script for Work Life Quality
 
 ## github_all.js
+
 ### GitHub Repository Manager
 
 This script provides an interactive command-line interface (CLI) to manage GitHub repositories. It allows you to clone all repositories from an organization, hard reset all repositories to a specific branch, search repositories with a keyword, list local repositories and perform actions, and search local repositories by keyword and perform actions.
@@ -25,28 +26,102 @@ This script provides an interactive command-line interface (CLI) to manage GitHu
 ```sh
 node github_all.js
 ```
+
 4. Follow the interactive prompts to perform various actions.
 
 ### Features
+
 1. Clone all repositories from an organization
-  - Prompts for the organization name.
-  - Clones all repositories from the specified organization.
-  - Hard reset all repositories to a specific branch
+
+- Prompts for the organization name.
+- Clones all repositories from the specified organization.
+- Hard reset all repositories to a specific branch
+
 2. Prompts for the branch name.
-  - Hard resets all local repositories in the current directory to the specified branch.
-  - Search repositories with a keyword
+
+- Hard resets all local repositories in the current directory to the specified branch.
+- Search repositories with a keyword
+
 3. Prompts for a keyword.
-  - Searches for repositories in the specified organization that contain the keyword.
-  - Optionally clones the found repositories.
-  - List local repositories and perform actions
+
+- Searches for repositories in the specified organization that contain the keyword.
+- Optionally clones the found repositories.
+- List local repositories and perform actions
+
 4. Lists all local repositories in the current directory.
-  - Prompts to reset to a specific branch, fetch the latest changes, or remove the node_modules folder.
-  - Search local repositories by keyword and perform actions
+
+- Prompts to reset to a specific branch, fetch the latest changes, or remove the node_modules folder.
+- Search local repositories by keyword and perform actions
+
 5. Prompts for a keyword.
-  - Lists local repositories in the current directory that contain the keyword.
-  - Prompts to reset to a specific branch, fetch the latest changes, or remove the node_modules folder.
+
+- Lists local repositories in the current directory that contain the keyword.
+- Prompts to reset to a specific branch, fetch the latest changes, or remove the node_modules folder.
+
 6. Exit
-  - Exits the script.
+
+- Exits the script.
+
+## get_all_secret.js
+
+### AWS Secrets Manager Retrieval Script
+
+This script retrieves all secrets from AWS Secrets Manager and writes each secret to a separate `.json` file. It provides two methods for retrieving secrets: using the AWS CLI and using the AWS SDK.
+
+### Prerequisites
+
+- Node.js installed on your machine
+- AWS CLI installed and configured with appropriate permissions
+- AWS SDK for Node.js (`aws-sdk` package)
+
+### Setup
+
+1. Clone the repository or download the script.
+2. Ensure you have the necessary AWS credentials configured. You can configure your AWS credentials using the AWS CLI:
+
+   ```sh
+   aws configure
+   ```
+
+3. Install the required Node.js packages:
+   ```sh
+   npm install aws-sdk
+   ```
+
+### Usage
+
+#### Using AWS CLI
+
+To use the AWS CLI method, uncomment the getAllAWSSecretsWithCli function call at the end of the script and specify the output format ('json' or 'env'):
+
+```javascript
+// Uncomment the function you want to use and specify the output format ('json' or 'env')
+getAllAWSSecretsWithCli('json');
+// getAllAWSSecretsWithCli('env');
+// getAllAWSSecretsWithSdk('json');
+// getAllAWSSecretsWithSdk('env');
+```
+
+#### Using AWS SDK
+To use the AWS SDK method, uncomment the getAllAWSSecretsWithSdk function call at the end of the script and specify the output format ('json' or 'env'):
+
+```javascript
+// Uncomment the function you want to use and specify the output format ('json' or 'env')
+// getAllAWSSecretsWithCli('json');
+// getAllAWSSecretsWithCli('env');
+// getAllAWSSecretsWithSdk('json');
+getAllAWSSecretsWithSdk('env');
+```
+
+#### Running The Script
+Run the script using Node.js:
+```sh
+node get_all_secret.js
+```
+
+## switch profile aws configuration
+### AWS Profile Configuration Guide
+Follow step in the AWS Profile configuration guide
 
 ## License
 
