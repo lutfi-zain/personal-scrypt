@@ -18,7 +18,7 @@ async function getAllAWSSecretsWithCli(outputFormat = 'json') {
 
         // List all secrets using AWS CLI with pagination
         do {
-            const listSecretsCommand = `aws secretsmanager list-secrets --region ap-southeast-3 ${nextToken ? `--next-token ${nextToken}` : ''}`;
+            const listSecretsCommand = `aws secretsmanager list-secrets --profile ${process.env.AWS_PROFILE} --region ap-southeast-3 ${nextToken ? `--next-token ${nextToken}` : ''}`;
             const listSecretsResponse = await execCommand(listSecretsCommand);
             const parsedResponse = JSON.parse(listSecretsResponse);
             secretsList = secretsList.concat(parsedResponse.SecretList);
@@ -36,7 +36,7 @@ async function getAllAWSSecretsWithCli(outputFormat = 'json') {
             if (secret.Name) {
                 try {
                     console.log("Retrieving secret for ", secret.Name);
-                    const getSecretValueCommand = `aws secretsmanager get-secret-value --secret-id ${secret.Name} --region ap-southeast-3`;
+                    const getSecretValueCommand = `aws secretsmanager get-secret-value --profile ${process.env.AWS_PROFILE} --secret-id ${secret.Name} --region ap-southeast-3`;
                     const getSecretValueResponse = await execCommand(getSecretValueCommand);
                     const secretValue = JSON.parse(getSecretValueResponse).SecretString;
 
@@ -81,8 +81,10 @@ async function getAllAWSSecretsWithSdk(outputFormat = 'json') {
             fs.mkdirSync(secretsDir);
         }
 
+        const credentials = new AWS.SharedIniFileCredentials({ profile: process.env.AWS_PROFILE });
+        AWS.config.credentials = credentials;
         AWS.config.update({
-            region: 'ap-southeast-3',
+            region: process.env.AWS_REGION || 'ap-southeast-3',
         });
         const secretsManager = new AWS.SecretsManager();
         const secrets = {};
