@@ -1,6 +1,7 @@
 # Personal Script for Work Life Quality
 
-## github_all.js
+<details>
+<summary>github_all.js</summary>
 
 ### GitHub Repository Manager
 
@@ -61,8 +62,10 @@ node github_all.js
 6. Exit
 
 - Exits the script.
+</details>
 
-## get_all_secret.js
+<details>
+<summary>get_all_secret.js</summary>
 
 ### AWS Secrets Manager Retrieval Script
 
@@ -118,11 +121,13 @@ Run the script using Node.js:
 ```sh
 node get_all_secret.js
 ```
+</details>
 
-## switch profile aws configuration
+<details>
+<summary>Switch Profile AWS Configuration</summary>
 ### AWS Profile Configuration Guide
 Follow step in the AWS Profile configuration guide
-
+</details>
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
