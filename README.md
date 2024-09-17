@@ -125,9 +125,12 @@ node get_all_secret.js
 
 <details>
 <summary>Switch Profile AWS Configuration</summary>
+   
 ### AWS Profile Configuration Guide
-Follow step in the AWS Profile configuration guide
+Follow step in the [AWS Profile configuration guide](switch%20profile%20aws%20configure.md)
+
 </details>
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
