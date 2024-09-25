@@ -5,6 +5,12 @@ const {
 } = require("@aws-sdk/client-cloudwatch");
 const { fromIni } = require("@aws-sdk/credential-provider-ini");
 const dayjs = require("dayjs");
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 const fs = require("fs");
 
 // Initialize CloudWatch client
@@ -50,9 +56,12 @@ const metrics = [
 ];
 
 // Specify your DB instance identifier
-const dbInstanceId = "kairos-pas-prod-db-iac";
-const StartTime = dayjs().subtract(1, "day");
-const EndTime = dayjs();
+// const dbInstanceId = "kairos-pay-prod-db-iac";
+const dbInstanceId = "keycloak-prod-db-iac";
+// const dbInstanceId = "hope-db-prod-01";
+// const dbInstanceId = "kairos-pas-prod-db-iac";
+const StartTime = dayjs("2024-09-23T08:00:00").tz("Asia/Jakarta");
+const EndTime = dayjs("2024-09-24T23:59:59").tz("Asia/Jakarta");
 
 // Function to query CloudWatch for each metric
 async function queryMetric(metric) {
@@ -147,7 +156,7 @@ async function generateHTML() {
 </head>
 <body>
   <h1>RDS Metrics Charts ${dbInstanceId}</h1>
-  <h3>From ${StartTime.toISOString()} To ${EndTime.toISOString()}</h3>
+  <h3>From ${StartTime.tz("Asia/Jakarta").toString()} To ${EndTime.tz("Asia/Jakarta").toString()}</h3>
   <div class="grid-container">
     ${chartsHtml}
   </div>
