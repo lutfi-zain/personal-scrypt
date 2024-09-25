@@ -54,19 +54,25 @@ async function hardResetAllReposToBranch(branch) {
       .filter((dirent) => dirent.isDirectory())
       .map((dirent) => dirent.name);
 
-    for (const repo of directories) {
+      const resetPromises = directories.map(async (repo) => {
       const repoPath = path.join(process.cwd(), repo);
       const gitPath = path.join(repoPath, ".git");
-
+    
       if (fs.existsSync(gitPath)) {
         const resetCommand = `cd ${repoPath} && git fetch origin && git reset --hard origin/${branch}`;
         console.log(`Resetting ${repo} to branch ${branch}...`);
-        await executeCommand(resetCommand);
-        console.log(`${repo} reset to branch ${branch} successfully.`);
+        try {
+          await executeCommand(resetCommand);
+          console.log(`${repo} reset to branch ${branch} successfully.`);
+        } catch (error) {
+          console.error(`Failed to reset ${repo} to branch ${branch}:`, error);
+        }
       } else {
         console.log(`Skipping ${repo} as it is not a valid Git repository.`);
       }
-    }
+    });
+    
+    await Promise.all(resetPromises);
   } catch (error) {
     console.error(error);
     mainMenu();
@@ -173,7 +179,7 @@ async function listLocalReposByKeyword(keyword) {
       async (action) => {
         if (action.toLowerCase() === "r") {
           rl.question("Enter the branch name to reset to: ", async (branch) => {
-            for (const repo of filteredDirectories) {
+              const resetPromises = filteredDirectories.map(async (repo) => {
               const repoPath = path.join(process.cwd(), repo);
               const gitPath = path.join(repoPath, ".git");
             
@@ -189,7 +195,9 @@ async function listLocalReposByKeyword(keyword) {
               } else {
                 console.log(`Skipping ${repo} as it is not a valid Git repository.`);
               }
-            }
+            });
+            
+            await Promise.all(resetPromises);
             rl.close();
             mainMenu();
           });
