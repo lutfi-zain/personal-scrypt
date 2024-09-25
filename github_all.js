@@ -176,16 +176,18 @@ async function listLocalReposByKeyword(keyword) {
             for (const repo of filteredDirectories) {
               const repoPath = path.join(process.cwd(), repo);
               const gitPath = path.join(repoPath, ".git");
-
+            
               if (fs.existsSync(gitPath)) {
                 const resetCommand = `cd ${repoPath} && git fetch origin && git reset --hard origin/${branch}`;
                 console.log(`Resetting ${repo} to branch ${branch}...`);
-                await executeCommand(resetCommand);
-                console.log(`${repo} reset to branch ${branch} successfully.`);
+                try {
+                  await executeCommand(resetCommand);
+                  console.log(`${repo} reset to branch ${branch} successfully.`);
+                } catch (error) {
+                  console.error(`Failed to reset ${repo} to branch ${branch}:`, error);
+                }
               } else {
-                console.log(
-                  `Skipping ${repo} as it is not a valid Git repository.`
-                );
+                console.log(`Skipping ${repo} as it is not a valid Git repository.`);
               }
             }
             rl.close();
