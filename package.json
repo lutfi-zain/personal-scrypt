@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-cloudwatch": "^3.658.0",
     "aws-sdk": "^2.1691.0",
+    "dayjs": "^1.11.13",
     "sequelize": "^6.37.3",
     "tedious": "^18.6.1"
   },

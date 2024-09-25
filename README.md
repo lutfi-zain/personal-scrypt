@@ -99,13 +99,14 @@ To use the AWS CLI method, uncomment the getAllAWSSecretsWithCli function call a
 
 ```javascript
 // Uncomment the function you want to use and specify the output format ('json' or 'env')
-getAllAWSSecretsWithCli('json');
+getAllAWSSecretsWithCli("json");
 // getAllAWSSecretsWithCli('env');
 // getAllAWSSecretsWithSdk('json');
 // getAllAWSSecretsWithSdk('env');
 ```
 
 #### Using AWS SDK
+
 To use the AWS SDK method, uncomment the getAllAWSSecretsWithSdk function call at the end of the script and specify the output format ('json' or 'env'):
 
 ```javascript
@@ -113,14 +114,17 @@ To use the AWS SDK method, uncomment the getAllAWSSecretsWithSdk function call a
 // getAllAWSSecretsWithCli('json');
 // getAllAWSSecretsWithCli('env');
 // getAllAWSSecretsWithSdk('json');
-getAllAWSSecretsWithSdk('env');
+getAllAWSSecretsWithSdk("env");
 ```
 
 #### Running The Script
+
 Run the script using Node.js:
+
 ```sh
 node get_all_secret.js
 ```
+
 </details>
 
 <details>
@@ -149,29 +153,29 @@ This script downloads all stored procedures from a specified MSSQL database and 
 2. Ensure you have Node.js installed. You can download it from [Node.js](https://nodejs.org/).
 3. Install the required Node.js packages:
 
-    ```sh
-    npm install sequelize
-    npm install tedious
-    ```
+   ```sh
+   npm install sequelize
+   npm install tedious
+   ```
 
 4. Update the database connection configuration in the script with your database credentials:
 
-    ```javascript
-    const sequelize = new Sequelize('database', 'username', 'password', {
-        host: 'localhost',
-        dialect: 'mssql',
-    });
-    ```
+   ```javascript
+   const sequelize = new Sequelize("database", "username", "password", {
+     host: "localhost",
+     dialect: "mssql",
+   });
+   ```
 
 ## Usage
 
 1. Open a terminal or command prompt.
-2. Navigate to the directory where [`download_all_sp.js`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FD%3A%2FSiloam%2Fgithub_personal%2Fpersonal-scrypt%2Fdownload_all_sp.js%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%223434e071-071a-47e4-8a95-ee7d4a49e829%22%5D "d:\Siloam\github_personal\personal-scrypt\download_all_sp.js") is located.
+2. Navigate to the directory where [`download_all_sp.js`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FD%3A%2FSiloam%2Fgithub_personal%2Fpersonal-scrypt%2Fdownload_all_sp.js%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%223434e071-071a-47e4-8a95-ee7d4a49e829%22%5D "d:\\Siloam\github_personal\personal-scrypt\download_all_sp.js") is located.
 3. Run the script using Node.js:
 
-    ```sh
-    node download_all_sp.js
-    ```
+   ```sh
+   node download_all_sp.js
+   ```
 
 4. The script will create a folder named after the database and save each stored procedure as a separate `.sql` file in that folder.
 
@@ -186,9 +190,9 @@ This script connects to an MSSQL database, retrieves all stored procedures from 
 Update the following section in the script with your database credentials:
 
 ```javascript
-const sequelize = new Sequelize('database', 'username', 'password', {
-    host: 'localhost',
-    dialect: 'mssql',
+const sequelize = new Sequelize("database", "username", "password", {
+  host: "localhost",
+  dialect: "mssql",
 });
 ```
 
@@ -225,6 +229,60 @@ database_name/
 ├── procedure3.sql
 ...
 ```
+
+</details>
+<summary>AWS RDS Metrics Generator</summary>
+## AWS RDS Metrics Generator
+This script queries various metrics from AWS CloudWatch for a specified RDS instance and generates an HTML file with charts and summaries of the metrics.
+
+## Prerequisites
+
+- Node.js installed on your machine.
+- AWS SDK for JavaScript v3.
+- AWS credentials configured (using `aws configure` or by setting up the `~/.aws/credentials` file).
+
+## Setup
+
+1. Clone the repository or download the script.
+2. Ensure you have Node.js installed. You can download it from [Node.js](https://nodejs.org/).
+3. Install the required Node.js packages:
+
+   ```sh
+   npm install @aws-sdk/client-cloudwatch @aws-sdk/credential-provider-ini dayjs
+   ```
+
+4. Update the script with your AWS region and DB instance identifier:
+
+   ```javascript
+   const client = new CloudWatchClient({
+     region: "ap-southeast-3", // Update with your AWS region
+     credentials: fromIni(), // Ensure your AWS credentials are configured
+   });
+
+   const dbInstanceId = "db-instance-id"; // Update with your DB instance identifier
+   const StartTime = dayjs().subtract(1, "day"); // Update with the desired start time
+   const EndTime = dayjs(); // Update with the desired end time
+   ```
+
+## Usage
+
+1. Open a terminal or command prompt.
+2. Navigate to the directory where `aws_query_metrics.js` is located.
+3. Run the script using Node.js:
+
+   ```sh
+   node aws_query_metrics.js
+   ```
+
+4. The script will generate an HTML file named `metrics_charts.html` in the same directory.
+
+## Output
+Open the file with browser
+```js
+metrics_charts.html
+```
+
+<details>
 </details>
 
 ## License
