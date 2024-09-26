@@ -231,6 +231,7 @@ database_name/
 ```
 
 </details>
+<details>
 <summary>AWS RDS Metrics Generator</summary>
 ## AWS RDS Metrics Generator
 This script queries various metrics from AWS CloudWatch for a specified RDS instance and generates an HTML file with charts and summaries of the metrics.
@@ -281,8 +282,6 @@ Open the file with browser
 ```js
 metrics_charts.html
 ```
-
-<details>
 </details>
 
 ## License
