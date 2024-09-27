@@ -284,6 +284,73 @@ metrics_charts.html
 ```
 </details>
 
+<details>
+<summary>encrypt.js by Majid</summary>
+
+# Encrypt.js
+
+This script provides AES-256-CBC encryption and decryption functionalities using the `crypto-js` library. It also generates Payment System URLs with encrypted parameters based on the environment.
+
+## Dependencies
+
+- `dotenv`: For loading environment variables from a `.env` file.
+- `crypto-js`: For encryption and decryption.
+
+## Environment Variables
+
+The script uses the following environment variables, which should be defined in a `.env` file:
+
+- `CipherKeyPreproduction`
+- `CipherKeyProduction`
+- `CipherKeyStaging`
+- `CipherKeyDevelopment`
+
+## Functions
+
+### `encrypt(data)`
+
+Encrypts the given data using AES-256-CBC encryption.
+
+- **Parameters:**
+  - `data` (string): The plaintext data to encrypt.
+- **Returns:**
+  - `string`: The encrypted data in hex format with IV.
+
+### `decrypt(cipher)`
+
+Decrypts the given cipher text using AES-256-CBC decryption.
+
+- **Parameters:**
+  - `cipher` (string): The encrypted data in hex format with IV.
+- **Returns:**
+  - `string`: The decrypted plaintext data.
+- **Throws:**
+  - `Error`: If decryption fails.
+
+### `generateUrl(env, admissionId, inv_no)`
+
+Generates a URL with encrypted parameters based on the environment.
+
+- **Parameters:**
+  - `env` (string): The environment (e.g., `preproduction`, `production`, `staging`, `development`).
+  - `admissionId` (string): The admission ID to encrypt.
+  - `inv_no` (string): The invoice number to encrypt.
+- **Returns:**
+  - `string`: The generated URL with encrypted parameters.
+
+## Usage
+
+### Command Line
+
+The script can be run from the command line with the following usage:
+
+```sh
+node encrypt.js <env> generateUrl <admissionid> <inv_no>
+node encrypt.js <env> string_to_encrypt
+```
+
+</details>
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
