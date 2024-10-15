@@ -351,6 +351,88 @@ node encrypt.js <env> string_to_encrypt
 
 </details>
 
+<details>
+<summary>approve_pr.ps1</summary>
+
+### PR Approval Script
+
+This PowerShell script reads a list of URLs from a file, extracts only the URLs, saves them back to the file, and then approves the PRs using the GitHub CLI.
+
+### Prerequisites
+
+- PowerShell installed on your machine.
+- GitHub CLI (`gh`) installed and authenticated. You can install it from [GitHub CLI](https://cli.github.com/).
+
+### Setup
+
+1. Clone this repository or download the script file `approve_pr.ps1`.
+2. Ensure you have PowerShell installed.
+3. Ensure you have GitHub CLI installed and authenticated. You can follow the instructions from [GitHub CLI](https://cli.github.com/).
+
+### Usage
+
+1. Open a PowerShell terminal.
+2. Navigate to the directory where `approve_pr.ps1` is located.
+3. Ensure you have a file named `prlist.txt` in the same directory with the list of PR URLs.
+4. Run the script:
+
+```powershell
+.\approve_pr.ps1
+```
+
+### Script Details
+
+#### approve_pr.ps1
+
+```powershell
+# Define the path to the PR list file
+$prListPath = "prlist.txt"
+
+# Regular expression to match any URL
+$urlPattern = "(https?://[^\s]+)"
+
+# Read the file and extract lines that contain URLs
+$prLinks = Get-Content $prListPath | ForEach-Object {
+    if ($_ -match $urlPattern) {
+        $matches[0]
+    }
+}
+
+# Save the cleaned URLs back to the file
+$prLinks | Set-Content $prListPath
+
+# Approve each PR using GitHub CLI
+foreach ($link in $prLinks) {
+    Write-Host "Approving PR: $link"
+    gh pr review $link --approve
+}
+```
+
+### Explanation
+
+1. **Extract only the URLs from the file and save them back to the file**:
+   - `Get-Content $prListPath` reads the content of the file.
+   - `ForEach-Object { if ($_ -match $urlPattern) { $matches[0] } }` extracts only the URLs from each line.
+   - `$prLinks | Set-Content $prListPath` saves the cleaned URLs back to the file.
+
+2. **Approve the PRs using the GitHub CLI**:
+   - `foreach ($link in $prLinks)` iterates over each cleaned link.
+   - `gh pr review $link --approve` uses the GitHub CLI to approve the PR.
+
+### Running the Script
+
+1. Save the script to a file, e.g., `approve_pr.ps1`.
+2. Open a PowerShell terminal.
+3. Run the script:
+
+```powershell
+.\approve_pr.ps1
+```
+
+Ensure you have the GitHub CLI installed and authenticated before running the script.
+
+</details>
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
